@@ -5,7 +5,6 @@ A simple React-based TODO application to manage your daily tasks.
 ## Features
 
 - Add, edit, and delete tasks
-- Mark tasks as completed
 - Filter tasks (All, Active, Completed)
 - Responsive design
 
