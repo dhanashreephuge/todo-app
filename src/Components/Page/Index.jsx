@@ -110,10 +110,10 @@ function Index () {
 
                 <ul className="list-group list-group-flush task-list-container">
                     {filteredTask.length === 0 ? (
-                        <li className="no-task p-3 text-center text-muted">No Task Available.</li>
+                        <li className="p-3 m-2 text-center text-muted alert alert-danger">No Task Available.</li>
                     ): (
                         filteredTask.map((task, idx) => (
-                            <li className="list-group-item d-flex justify-content-between align-items-start py-3 px-3
+                            <li className="list-group-item d-flex justify-content-between align-items-start py-3 px-3 my-2 mx-2
                             rounded mb-2 shadow-sm task-item" key={idx}>
                                 <div>
                                     <span className="fw-semibold">{task.text}</span>
