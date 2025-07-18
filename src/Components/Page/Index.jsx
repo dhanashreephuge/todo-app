@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import cate1 from '../../assets/cate-1.png'
-import cate2 from '../../assets/cate-2.png'
-import cate3 from '../../assets/cate-3.png'
-import cate4 from '../../assets/cate-4.png'
-import cate5 from '../../assets/cate-5.png'
-import cate6 from '../../assets/cate-6.png'
-import { use } from 'react'
+import cate1 from '../../assets/cate-1.png';
+import cate2 from '../../assets/cate-2.png';
+import cate3 from '../../assets/cate-3.png';
+import cate4 from '../../assets/cate-4.png';
+import cate5 from '../../assets/cate-5.png';
+import cate6 from '../../assets/cate-6.png';
 
 const categories = [
     {title: 'Personal', image: cate1},
@@ -43,12 +42,16 @@ function Index () {
             category: taskCategory,
             date: today.toISOString(),
         };
-        setTasks([...tasks, newTask]);
+        setTasks([...tasks, newTask]); 
+
         setInputTask('');
-        setShowAddTask(false);
+       // setShowAddTask(false);
+       setTaskCategory('Personal');
+    setShowAddTask(false);
+    setSelectedCategory('All');
     };
 
-    const confimDeleteTask = (index) => {
+    const confirmDeleteTask = (index) => {
         setTaskToDelete(index);
         setShowConfirmModal(true);
     };
@@ -58,7 +61,8 @@ function Index () {
             const updated = [...tasks];
             updated.splice(taskToDelete, 1);
             setTasks(updated);
-        }
+        } 
+        
         setTaskToDelete(null);
         setShowConfirmModal(false);
     };
@@ -100,7 +104,7 @@ function Index () {
 
                         <button className="btn btn-sm btn-dark" 
                         onClick={() => setShowAddTask(true)}>
-                            <i className='ri-add-line'></i> Add Task</button>
+                            <i className='ri-add-line'></i> Add</button>
                     </div>
                 </div>
 
@@ -118,7 +122,9 @@ function Index () {
                                 </div>
                                 <i className="ri-delete-bin-line text-danger fs-5" 
                                 style={{cursor: 'pointer'}}
-                                onClick={() => confimDeleteTask(task.indexOf(task))}></i>
+                                // onClick={() => confirmDeleteTask(tasks.indexOf(task))}
+                                onClick={() => confirmDeleteTask(tasks.findIndex(t => t.text === task.text && t.date === task.date))}
+                                ></i>
                             </li>
                         ))
                     )}
@@ -130,14 +136,51 @@ function Index () {
                 <>
                 <div className="position-fixed top-0 start-0 w-100 h-100"
                 style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 9999}}
-                onClick={() => setShowAddTask(false)}></div>
+                onClick={() => setShowAddTask(false)}>
+
                 <div className="position-fixed top-50 start-50 translate-middle bg-light p-4 rounded shadow"
-                style={{width: '90%', maxWidth: '400px', zIndex: 1001}}>
+                style={{width: '90%', maxWidth: '400px', zIndex: 1001}}
+                onClick={(e) => e.stopPropagation()}>
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <h5 className="mb-0">Add New Task</h5>
                         <i className="ri-close-line fs-4" 
                         style={{cursor: 'pointer'}} 
                         onClick={() => setShowAddTask(false)}></i>
+                    </div>
+                    <input type="text" className="form-control mb-3" placeholder='Enter task...'
+                    value={inputTask} onChange={(e) => setInputTask(e.target.value)} 
+                    onKeyDown={(e) => e.key === 'Enter' && handleAddTask()} 
+                    autoFocus />
+                    <select className="form-select mb-3"
+                    value={taskCategory} 
+                    onChange={(e)=> setTaskCategory(e.target.value)}>
+                        {categories.map((cat) => (
+                            <option key={cat.title} value={cat.title}>
+                                {cat.title}
+                            </option>
+                        ))}
+                    </select>
+                    <button className="btn btn-warning w-100" onClick={handleAddTask}>Add Task</button></div>
+                </div>
+                </>
+            )}
+
+
+            {showConfirmModal && (
+                <>
+                <div className="position-fixed top-0 start-0 w-100 h-100"
+                style={{backgroundColor: 'rgba(0, 0, 0, 0.5)', zIndex: 1050}}
+                onClick={() => setShowConfirmModal(false)}>
+                    <div 
+                    className="position-fixed top-50 start-50 translate-middle bg-white p-4 rounded shadow"
+                    style={{width: '90%', maxWidth: '320px', zIndex: 1051, textAlign: 'center'}}>
+                        <p className="modal-text my-3">Are you sure you want to delete this task?</p>
+                        <div className="d-flex justify-content-center gap-3">
+                            <button className="btn btn-danger"
+                            onClick={handleDeleteTask}>Delete</button>
+                            <button className="btn btn-secondary"
+                            onClick={() => setShowConfirmModal(false)}>Cancel</button>
+                        </div>
                     </div>
                 </div>
                 </>
